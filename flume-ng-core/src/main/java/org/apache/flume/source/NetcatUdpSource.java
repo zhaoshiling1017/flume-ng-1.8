@@ -37,14 +37,7 @@ import org.apache.flume.conf.Configurables;
 import org.apache.flume.event.EventBuilder;
 import org.jboss.netty.bootstrap.ConnectionlessBootstrap;
 import org.jboss.netty.buffer.ChannelBuffer;
-import org.jboss.netty.channel.AdaptiveReceiveBufferSizePredictorFactory;
-import org.jboss.netty.channel.Channel;
-import org.jboss.netty.channel.ChannelHandlerContext;
-import org.jboss.netty.channel.ChannelPipeline;
-import org.jboss.netty.channel.ChannelPipelineFactory;
-import org.jboss.netty.channel.Channels;
-import org.jboss.netty.channel.MessageEvent;
-import org.jboss.netty.channel.SimpleChannelHandler;
+import org.jboss.netty.channel.*;
 import org.jboss.netty.channel.socket.oio.OioDatagramChannelFactory;
 
 import org.slf4j.Logger;
@@ -131,8 +124,7 @@ public class NetcatUdpSource extends AbstractSource
         new OioDatagramChannelFactory(Executors.newCachedThreadPool()));
     final NetcatHandler handler = new NetcatHandler();
     serverBootstrap.setOption("receiveBufferSizePredictorFactory",
-        new AdaptiveReceiveBufferSizePredictorFactory(DEFAULT_MIN_SIZE,
-        DEFAULT_INITIAL_SIZE, maxsize));
+        new FixedReceiveBufferSizePredictorFactory(maxsize));
     serverBootstrap.setPipelineFactory(new ChannelPipelineFactory() {
       @Override
       public ChannelPipeline getPipeline() {

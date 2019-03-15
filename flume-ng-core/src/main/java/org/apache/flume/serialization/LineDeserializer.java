@@ -49,13 +49,15 @@ public class LineDeserializer implements EventDeserializer {
   public static final String CHARSET_DFLT = "UTF-8";
 
   public static final String MAXLINE_KEY = "maxLineLength";
-  public static final int MAXLINE_DFLT = 2048;
+  // 默认值为2k(2048)，此处更改为1024k(1048576)
+  public static final int MAXLINE_DFLT = 1048576;
 
   LineDeserializer(Context context, ResettableInputStream in) {
     this.in = in;
     this.outputCharset = Charset.forName(
         context.getString(OUT_CHARSET_KEY, CHARSET_DFLT));
-    this.maxLineLength = context.getInteger(MAXLINE_KEY, MAXLINE_DFLT);
+    // this.maxLineLength = context.getInteger(MAXLINE_KEY, MAXLINE_DFLT);
+    this.maxLineLength = MAXLINE_DFLT;
     this.isOpen = true;
   }
 
